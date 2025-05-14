@@ -1,36 +1,59 @@
 "use server"
 
 import { createClient } from "@/utils/supabase/server"
+import { DIFFICULTY_MAP } from "@/constants/difficulty"
 
 export const getAllWords = async () => {
-  const supabase = await createClient()
-  const { data: cardsData, error } = await supabase
-    .from("words")
-    .select("*")
-    .order("id", { ascending: true })
+  try {
+    const supabase = await createClient()
+    const { data: user } = await supabase.auth.getUser()
+    const uid = user.user.id
 
-  console.log("Cards data:", cardsData)
-  if (error) {
-    console.error("Error fetching cards:", error)
-    throw new Error("Error fetching cards")
+    const { data: wordsData, error } = await supabase
+      .from("words")
+      .select("*")
+      .eq("uid", uid)
+      .order("id", { ascending: true })
+
+    console.log("Server action get all words successfully")
+    if (error) {
+      console.error("Error getting all words:", error.message)
+      throw new Error(error)
+    }
+
+    return wordsData
+  } catch (error) {
+    console.error(error)
+    return { error: error }
   }
-
-  return cardsData
 }
 
 export const addWord = async (form) => {
-  const supabase = await createClient()
-  const newForm = {
-    ...form,
-    last_reviewed: new Date().toISOString(),
-    score: 0,
-  }
-  const { data, error } = await supabase.from("words").insert([form]).select()
+  try {
+    const supabase = await createClient()
+    const { data: user } = await supabase.auth.getUser()
 
-  if (error) {
-    console.error("Error adding word:", error)
-    return
-  }
+    const newForm = {
+      ...form,
+      difficulty: DIFFICULTY_MAP[form.difficulty],
+      uid: user.user.id,
+      last_reviewed: new Date().toISOString(),
+      score: 0,
+    }
 
-  return data
+    const { data, error } = await supabase
+      .from("words")
+      .insert([newForm])
+      .select()
+
+    if (error) {
+      console.error("Error adding word:", error.message)
+      throw new Error(error)
+    }
+
+    return { data: data }
+  } catch (error) {
+    console.error(error)
+    return { error: error }
+  }
 }

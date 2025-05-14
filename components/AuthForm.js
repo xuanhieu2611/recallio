@@ -46,10 +46,12 @@ export default function AuthForm({ isSignUp }) {
               ? "Account created successfully!"
               : "Signed in successfully!",
           )
-          router.replace("/home")
+          router.replace("/")
         }
       } catch (error) {
-        console.error(error)
+        toast.error("Error: ", {
+          description: error.message,
+        })
       }
     })
   }

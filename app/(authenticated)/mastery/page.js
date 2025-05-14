@@ -15,28 +15,29 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { MasteryChart } from "@/components/mastery/mastery-chart"
 import { LearningTrendChart } from "@/components/mastery/learning-trend-chart"
 import { WordCategoryChart } from "@/components/mastery/word-category-chart"
-
+import { SidebarTrigger } from "@/components/ui/sidebar"
 export default function MasteryPage() {
   return (
-    <div className="container mx-auto p-6">
-      <div className="mb-8 flex items-center justify-between">
-        <div>
+    <div className="container mx-auto">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <SidebarTrigger />
           <h1 className="text-3xl font-bold tracking-tight">
             Mastery Dashboard
           </h1>
-          <p className="text-muted-foreground">
-            Track your vocabulary progress over time
-          </p>
         </div>
         <Button variant="outline" size="sm" asChild>
-          <Link href="/">
+          <Link href="/dashboard">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Dashboard
           </Link>
         </Button>
       </div>
+      <p className="text-muted-foreground mt-2">
+        Track your vocabulary progress over time
+      </p>
 
-      <div className="grid gap-6 md:grid-cols-3">
+      <div className="mt-8 grid gap-6 md:grid-cols-3">
         <StatsCard
           title="Total Words"
           value="400"

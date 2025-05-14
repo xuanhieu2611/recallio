@@ -27,7 +27,7 @@ export const SignUpAction = async ({ email, password }) => {
 
     if (profileError) {
       console.error("Profile creation failed:", profileError.message)
-      throw new Error(error)
+      throw new Error(profileError)
     }
 
     console.log("A new user just signed up")

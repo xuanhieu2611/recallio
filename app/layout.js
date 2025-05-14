@@ -1,15 +1,8 @@
 import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
-import Navbar from "@/components/Navbar"
 import { ThemeProvider } from "@/providers/ThemeProvider"
 import { Toaster } from "@/components/ui/sonner"
-import { getUser } from "@/utils/supabase/server"
-import {
-  Sidebar,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar"
-import { AppSideBar } from "@/components/SideBar"
+import { WordsProvider } from "@/contexts/WordsContext"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,8 +20,6 @@ export const metadata = {
 }
 
 export default async function RootLayout({ children }) {
-  const user = await getUser()
-
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -40,17 +31,10 @@ export default async function RootLayout({ children }) {
           enableSystem
           disableTransitionOnChange
         >
-          <SidebarProvider>
-            <div className="flex min-h-screen w-full">
-              {/* <Navbar user={user} /> */}
-              <AppSideBar />
-              <main className="flex flex-1 flex-col overflow-auto px-4 xl:px-8">
-                <SidebarTrigger />
-                {children}
-              </main>
-            </div>
+          <WordsProvider>
+            {children}
             <Toaster richColors />
-          </SidebarProvider>
+          </WordsProvider>
         </ThemeProvider>
       </body>
     </html>

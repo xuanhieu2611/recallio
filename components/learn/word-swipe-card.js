@@ -9,36 +9,36 @@ import { Card, CardFooter } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 
 // Mock data for words
-const words = [
-  {
-    id: 1,
-    word: "Ephemeral",
-    pronunciation: "/ɪˈfɛm(ə)rəl/",
-    partOfSpeech: "adjective",
-    definition: "Lasting for a very short time.",
-    example: "The ephemeral nature of fashion trends makes it hard to keep up.",
-    difficulty: "advanced",
-  },
-  {
-    id: 2,
-    word: "Ubiquitous",
-    pronunciation: "/juːˈbɪkwɪtəs/",
-    partOfSpeech: "adjective",
-    definition: "Present, appearing, or found everywhere.",
-    example: "Mobile phones have become ubiquitous in modern society.",
-    difficulty: "advanced",
-  },
-  {
-    id: 3,
-    word: "Serendipity",
-    pronunciation: "/ˌsɛr(ə)nˈdɪpɪti/",
-    partOfSpeech: "noun",
-    definition:
-      "The occurrence of events by chance in a happy or beneficial way.",
-    example: "The discovery of penicillin was a serendipity.",
-    difficulty: "advanced",
-  },
-]
+// const words = [
+//   {
+//     id: 1,
+//     word: "Ephemeral",
+//     pronunciation: "/ɪˈfɛm(ə)rəl/",
+//     partOfSpeech: "adjective",
+//     definition: "Lasting for a very short time.",
+//     example: "The ephemeral nature of fashion trends makes it hard to keep up.",
+//     difficulty: "advanced",
+//   },
+//   {
+//     id: 2,
+//     word: "Ubiquitous",
+//     pronunciation: "/juːˈbɪkwɪtəs/",
+//     partOfSpeech: "adjective",
+//     definition: "Present, appearing, or found everywhere.",
+//     example: "Mobile phones have become ubiquitous in modern society.",
+//     difficulty: "advanced",
+//   },
+//   {
+//     id: 3,
+//     word: "Serendipity",
+//     pronunciation: "/ˌsɛr(ə)nˈdɪpɪti/",
+//     partOfSpeech: "noun",
+//     definition:
+//       "The occurrence of events by chance in a happy or beneficial way.",
+//     example: "The discovery of penicillin was a serendipity.",
+//     difficulty: "advanced",
+//   },
+// ]
 
 export function WordSwipeCard() {
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -48,7 +48,9 @@ export function WordSwipeCard() {
   const rotate = useTransform(x, [-200, 200], [-15, 15])
   const opacity = useTransform(x, [-200, 0, 200], [0.5, 1, 0.5])
 
-  const currentWord = words[currentIndex]
+  const words = null
+
+  const currentWord = words?.[currentIndex]
 
   const handleDragEnd = (event, info) => {
     if (info.offset.x > 100) {
@@ -67,7 +69,7 @@ export function WordSwipeCard() {
     }
   }
 
-  return (
+  return words ? (
     <motion.div
       style={{ x, rotate, opacity }}
       drag="x"
@@ -82,17 +84,17 @@ export function WordSwipeCard() {
             <div className="flex-1 p-6">
               <div className="mb-4 flex items-center justify-between">
                 <Badge variant="outline" className="text-xs">
-                  {currentWord.partOfSpeech}
+                  {currentWord?.partOfSpeech}
                 </Badge>
                 <Badge variant="secondary" className="text-xs">
-                  {currentWord.difficulty}
+                  {currentWord?.difficulty}
                 </Badge>
               </div>
 
               <div className="mb-6 text-center">
-                <h2 className="mb-2 text-3xl font-bold">{currentWord.word}</h2>
+                <h2 className="mb-2 text-3xl font-bold">{currentWord?.word}</h2>
                 <div className="text-muted-foreground flex items-center justify-center gap-2 text-sm">
-                  <span>{currentWord.pronunciation}</span>
+                  <span>{currentWord?.pronunciation}</span>
                   <Button variant="ghost" size="icon" className="h-6 w-6">
                     <VolumeUp className="h-4 w-4" />
                     <span className="sr-only">Pronounce</span>
@@ -107,11 +109,11 @@ export function WordSwipeCard() {
                   <>
                     <div className="mb-4">
                       <h3 className="mb-1 text-sm font-medium">Definition</h3>
-                      <p className="text-sm">{currentWord.definition}</p>
+                      <p className="text-sm">{currentWord?.definition}</p>
                     </div>
                     <div>
                       <h3 className="mb-1 text-sm font-medium">Example</h3>
-                      <p className="text-sm italic">{currentWord.example}</p>
+                      <p className="text-sm italic">{currentWord?.example}</p>
                     </div>
                   </>
                 )}
@@ -131,5 +133,9 @@ export function WordSwipeCard() {
         </div>
       </Card>
     </motion.div>
+  ) : (
+    <div className="bg-card flex h-[400px] w-[300px] items-center justify-center rounded-lg border p-6 text-center">
+      <p className="text-muted-foreground">No words found</p>
+    </div>
   )
 }

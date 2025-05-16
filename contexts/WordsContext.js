@@ -1,7 +1,8 @@
 "use client"
 
 import { createContext, useContext, useState, useEffect } from "react"
-import { getAllWords } from "@/actions/WordsAction"
+import { getAllWords, addWord as addWordAction } from "@/actions/WordsAction"
+import { DIFFICULTY_MAP } from "@/constants/difficulty"
 
 const WordsContext = createContext()
 

@@ -57,3 +57,27 @@ export const addWord = async (form) => {
     return { error: error }
   }
 }
+
+export const deleteWord = async (wordId) => {
+  try {
+    const supabase = await createClient()
+    const { data: user } = await supabase.auth.getUser()
+    const uid = user.user.id
+
+    const { error } = await supabase
+      .from("words")
+      .delete()
+      .eq("id", wordId)
+      .eq("uid", uid)
+
+    if (error) {
+      console.error("Error deleting word:", error.message)
+      throw new Error(error)
+    }
+
+    return { success: true }
+  } catch (error) {
+    console.error(error)
+    return { error: error }
+  }
+}

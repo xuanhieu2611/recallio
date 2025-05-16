@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/select"
 import { toast } from "sonner"
 import { addWord } from "@/actions/WordsAction"
+import { useWordsContext } from "@/contexts/WordsContext"
 
 export function AddWordForm({ open, onOpenChange, onAddWord }) {
   const [formData, setFormData] = useState({
@@ -35,6 +36,7 @@ export function AddWordForm({ open, onOpenChange, onAddWord }) {
     difficulty: "intermediate",
   })
   const [isLoading, setIsLoading] = useState(false)
+  const { setWords, words } = useWordsContext()
 
   const fetchWordDetails = useCallback(async (word) => {
     if (!word) return
@@ -117,6 +119,9 @@ export function AddWordForm({ open, onOpenChange, onAddWord }) {
       })
       return
     }
+
+    setWords((prev) => [...prev, response.data[0]])
+    console.log("Words after adding a new word:", words)
 
     // Reset form and close dialog
     setFormData({

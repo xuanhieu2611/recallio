@@ -43,6 +43,7 @@ export function FlashcardReview() {
     } else {
       setIsCompleted(true)
       setProgress(100)
+      handleBatchUpdateAfterReview()
     }
   }
 
@@ -67,6 +68,21 @@ export function FlashcardReview() {
     setShowAnswer(false)
     setProgress(0)
     setIsCompleted(false)
+  }
+
+  const handleBatchUpdateAfterReview = async () => {
+    if (!reviewWords?.length) return
+    const wordIds = reviewWords.map((w) => w.id)
+    try {
+      const { batchUpdateWordsAfterReview } = await import(
+        "@/actions/WordsAction"
+      )
+      await batchUpdateWordsAfterReview(wordIds)
+    } catch (err) {
+      toast.error("Failed to update review info for all words", {
+        description: err?.message,
+      })
+    }
   }
 
   return (
